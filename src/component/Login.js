@@ -8,7 +8,6 @@ import List from './List';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        // backgroundImage: `url(${fondo})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -24,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     div: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -105,8 +104,7 @@ const Login = () => {
                             color='primary'
                             className={classes.button}
                             onClick={onSubmit}
-                        >
-                            Inicio de Sesion
+                        >Inicio de Sesion
                         </Button>
                     </form>
                 </div>

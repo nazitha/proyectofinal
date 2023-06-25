@@ -1,12 +1,63 @@
-import {  Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton } from '@mui/material';
+/* eslint-disable eqeqeq */
+import {  Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton,Toolbar, InputAdornment } from '@mui/material';
+import { makeStyles } from "@material-ui/styles";
 import {EditOutlined} from '@material-ui/icons'
 import { DeleteForeverOutlined } from '@material-ui/icons';
 import List2 from './List2';
 import "../CSS/Dashboard.css"
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
+import Controls from '../Modal/Controles';
+import AddIcon from '@material-ui/icons/Add';
+import { Search } from "@material-ui/icons";
+import Poppup from '../Modal/Poppus';
+import Formmodels from '../Modal/Formodels';
 
-const Dashboard = () => {
+
+const useStyles = makeStyles(theme=> ({
+   searchInput: {
+      width: '75%'
+  },
+  newButton: {
+      position: 'absolute',
+      right: '10px',
+      width: '20%'
+  }
+}))
+
+export default function Dashboard () {
+  const classes = useStyles();
+  const [recordForEdit, setRecordForEdit] = useState(null)
+     const [openPopup, setOpenPopup] = useState(false)
+     const [ setFilterFn] = useState({ fn: items => { return items; } })
+
+  const handleSearch = e => {
+    let target = e.target;
+    setFilterFn({
+        fn: items => {
+            if (target.value == "")
+                return items;
+            else
+                return items.filter(x => x.fullName.toLowerCase().includes(target.value))
+        }
+    })
+}
+
+const addOrEdit = (Dashboard, resetForm) => {
+    if (Dashboard.id == 0)
+        Formmodels.insertAtleta(Dashboard)
+    else
+        Formmodels.updateA(Dashboard)
+    resetForm()
+    setRecordForEdit(null)
+    setOpenPopup(false)
+}
+
+const openInPopup = item => {
+    setRecordForEdit(item)
+    setOpenPopup(true)
+}
+
     const[userList, setUserList] = useState ([])
 
     const getUser = async () => {
@@ -29,6 +80,26 @@ const Dashboard = () => {
   return<>
      <List2/>
        <h1 className='text-center'>Tabla de Atletas</h1>
+
+       <Toolbar>
+                    <Controls.Input
+                        label="Buscar Atletlas"
+                        className={classes.searchInput}
+                        InputProps={{
+                            startAdornment: (<InputAdornment position="start">
+                                <Search />
+                            </InputAdornment>)
+                        }}
+                        onChange={handleSearch}
+                    />
+                    <Controls.Button
+                        text="Agregar"
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        className={classes.newButton}
+                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
+                    />
+                </Toolbar>
    
          
         <div className='result-container' id="resultConstainer">
@@ -57,7 +128,8 @@ const Dashboard = () => {
                         <TableCell>
                         <IconButton 
                             size='small' 
-                            color='primary'>
+                            color='primary'
+                            onClick={() => { openInPopup(item) }}>
                             <EditOutlined/>
                         </IconButton>
                         <IconButton 
@@ -78,9 +150,17 @@ const Dashboard = () => {
             </TableContainer>   
 
         </div>
+        <Poppup
+                title="Agregar Atleta"
+                openPopup={openPopup}
+                setOpenPopup={setOpenPopup}
+            >
+                <Formmodels
+                    recordForEdit={recordForEdit}
+                    addOrEdit={addOrEdit} />
+            </Poppup>
 
       
 
     </>
 };
-export default Dashboard;
