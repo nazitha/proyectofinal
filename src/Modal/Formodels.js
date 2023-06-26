@@ -72,7 +72,7 @@ export default function EmployeeForm(props) {
                     />
                     <Controls.Input
                         name="LastName"
-                        label="Nombre"
+                        label="Apellido"
                         value={values.LastName}
                         onChange={handleInputChange}
                         error={errors.LastName}
@@ -85,15 +85,15 @@ export default function EmployeeForm(props) {
                         error={errors.Number}
                     />
                     <Controls.Input
-                        label="Mobile"
-                        name="Codigo FIDE"
+                        label="Codigo Fide"
+                        name="Mobile"
                         value={values.mobile}
                         onChange={handleInputChange}
                         error={errors.mobile}
                     />
                     <Controls.Input
-                        label="City"
-                        name="Academia"
+                        label="Academia"
+                        name="City"
                         value={values.city}
                         onChange={handleInputChange}
                     />
@@ -105,11 +105,11 @@ export default function EmployeeForm(props) {
 
                     <div>
                         <Controls.Button
-                            type="Confirmar"
-                            text="Submit" />
+                            type="Submit"
+                            text="Confirmar" />
                         <Controls.Button
                             text="Cancelar"
-                            color="default"
+                            color="primary"
                             onClick={resetForm} />
                     </div>
                 </Grid>

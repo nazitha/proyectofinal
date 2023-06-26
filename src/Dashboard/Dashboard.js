@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/styles";
 import {EditOutlined} from '@material-ui/icons'
 import { DeleteForeverOutlined } from '@material-ui/icons';
 import List2 from './List2';
-import "../CSS/Dashboard.css"
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 import Controls from '../Modal/Controles';
@@ -14,7 +13,7 @@ import Poppup from '../Modal/Poppus';
 import Formmodels from '../Modal/Formodels';
 
 
-const useStyles = makeStyles(theme=> ({
+const useStyles = makeStyles( ({
    searchInput: {
       width: '75%'
   },
@@ -75,7 +74,6 @@ const openInPopup = item => {
       }
     }
 
-    useEffect(getUser,[])
     
   return<>
      <List2/>
