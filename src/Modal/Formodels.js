@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Grid, } from '@material-ui/core';
-import Controls from "./Controles";
+import Controles from "./Controles";
 import { useForm, Form } from './useForm';
 
 
@@ -14,7 +14,7 @@ const initialFValues = {
     isPermanent: false,
 }
 
-export default function EmployeeForm(props) {
+export default function Formmodels(props) {
     const { addOrEdit, recordForEdit } = props
 
     const validate = (fieldValues = values) => {
@@ -63,35 +63,35 @@ export default function EmployeeForm(props) {
         <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs={5}>
-                    <Controls.Input
+                    <Controles.Input
                         name="fullName"
                         label="Nombre"
                         value={values.fullName}
                         onChange={handleInputChange}
                         error={errors.fullName}
                     />
-                    <Controls.Input
+                    <Controles.Input
                         name="LastName"
                         label="Apellido"
                         value={values.LastName}
                         onChange={handleInputChange}
                         error={errors.LastName}
                     />
-                        <Controls.Input
+                        <Controles.Input
                         name="Number"
                         label="Elo"
                         value={values.Number}
                         onChange={handleInputChange}
                         error={errors.Number}
                     />
-                    <Controls.Input
+                    <Controles.Input
                         label="Codigo Fide"
                         name="Mobile"
                         value={values.mobile}
                         onChange={handleInputChange}
                         error={errors.mobile}
                     />
-                    <Controls.Input
+                    <Controles.Input
                         label="Academia"
                         name="City"
                         value={values.city}
@@ -104,10 +104,10 @@ export default function EmployeeForm(props) {
                  
 
                     <div>
-                        <Controls.Button
+                        <Controles.Button
                             type="Submit"
                             text="Confirmar" />
-                        <Controls.Button
+                        <Controles.Button
                             text="Cancelar"
                             color="primary"
                             onClick={resetForm} />
