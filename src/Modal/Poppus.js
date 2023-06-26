@@ -1,6 +1,6 @@
 import { Dialog, DialogTitle, DialogContent,  Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-import Controls from "../Modal/Controles";
+import Controles from "../Modal/Controles";
 import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles(theme => ({
@@ -21,16 +21,16 @@ export default function Poppup(props) {
 
     return (
         <Dialog open={openPopup} maxWidth="md" classes={{ paper: classes.dialogWrapper }}>
-            <DialogTitle className={classes.dialogTitle}>
+            <DialogTitle>
                 <div style={{ display: 'flex' }}>
                     <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
                         {title}
                     </Typography>
-                    <Controls.ActionButton
+                    <Controles.ActionButton
                         color="secondary"
                         onClick={()=>{setOpenPopup(false)}}>
                         <CloseIcon />
-                    </Controls.ActionButton>
+                    </Controles.ActionButton>
                 </div>
             </DialogTitle>
             <DialogContent dividers>

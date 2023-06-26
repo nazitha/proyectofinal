@@ -6,7 +6,7 @@ import { DeleteForeverOutlined } from '@material-ui/icons';
 import List2 from './List2';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
-import Controls from '../Modal/Controles';
+import Controles from '../Modal/Controles';
 import AddIcon from '@material-ui/icons/Add';
 import { Search } from "@material-ui/icons";
 import Poppup from '../Modal/Poppus';
@@ -82,7 +82,7 @@ const openInPopup = item => {
        <h1 className='text-center'>Tabla de Atleta</h1>
 
        <Toolbar>
-                    <Controls.Input
+                    <Controles.Input
                         label="Buscar Atletlas"
                         className={classes.searchInput}
                         InputProps={{
@@ -92,9 +92,8 @@ const openInPopup = item => {
                         }}
                         onChange={handleSearch}
                     />
-                    <Controls.Button
+                    <Controles.Button
                         text="Agregar"
-                        variant="outlined"
                         startIcon={<AddIcon />}
                         className={classes.newButton}
                         onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}

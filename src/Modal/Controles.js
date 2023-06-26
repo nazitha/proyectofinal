@@ -2,10 +2,10 @@ import Input from "../Modal/Inputs";
 import Button from "./Button";
 import ActionButton from "./ActionButton";
 
-const Controls = {
+const Controles = {
     Input,
     Button,
     ActionButton
 }
 
-export default Controls;
+export default Controles;
