@@ -55,13 +55,17 @@ const Login = () => {
     }
 
     const onSubmit = () => {
-        axios.post('/', body)
+        console.log(body)
+        axios.post('http://localhost:4000/api/LoginIngresar', body)
             .then(({ data }) => {
                 localStorage.setItem('auth', '"yes"')
+                console.log(data)
+                console.log('Entro')
                 push('/Dashboard')
+                console.log('y aqui')
             })
             .catch(({ response }) => {
-                console.log(response.data)
+                console.log("No entro")
             })
     }
 
