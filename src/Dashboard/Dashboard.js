@@ -60,24 +60,26 @@ const openInPopup = item => {
     const[userList, setUserList] = useState ([])
 
     const getUser = async () => {
-      const { data } = await axios.get('/')
+      const { data } = await axios.get('http://localhost:4000/api/MostrarDeportista')
       console.log(data)
       setUserList(data)
     }
 
     const Eliminar = async (id) =>{
-      try{
-        const { data } = await axios.post('/')
-        getUser()
-      }catch(error){
-        console.log(error)
-      }
+        try{
+            const { data } = await axios.post('http://localhost:4000/api/EliminarDeportista', {id:id})
+            getUser()
+          }catch(error){
+            console.log(error)
+          }
     }
+
+    useEffect(getUser, [])
 
     
   return<>
      <List2/>
-       <h1 className='text-center'>Tabla de Atletas</h1>
+       <h1 className='text-center'>Tabla de Atleta</h1>
 
        <Toolbar>
                     <Controles.Input
@@ -114,7 +116,7 @@ const openInPopup = item => {
                     </TableRow>
                 </TableHead>   
                 <TableBody>
-                    {/* {userList.map((user,index) => (
+                    {userList.map((user,index) => (
                     <TableRow key={index}>
                         <TableCell>{user.Id_Deportista}</TableCell>
                         <TableCell>{user.Nombre}</TableCell>
@@ -126,7 +128,8 @@ const openInPopup = item => {
                         <IconButton 
                             size='small' 
                             color='primary'
-                            onClick={() => { openInPopup(item) }}>
+                            //onClick={() => { openInPopup(item) }}
+                            >
                             <EditOutlined/>
                         </IconButton>
                         <IconButton 
@@ -140,7 +143,7 @@ const openInPopup = item => {
                         </TableCell>
                     </TableRow>
                     ))
-                    } */}
+                    }
                 
                 </TableBody>       
                 </Table>

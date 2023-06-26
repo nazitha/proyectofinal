@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Grid, } from '@material-ui/core';
-import Controles from "./Controles";
+import Controls from "./Controles";
 import { useForm, Form } from './useForm';
+import axios from 'axios';
+import  {Alert} from '@mui/material';
 
 
-const initialFValues = {
-    id: 0,
-    fullName: '',
-    LastName:'',
-    Number: '',
-    mobile: '',
-    city: '',
-    isPermanent: false,
-}
+export default function EmployeeForm(props) {
 
 export default function Formmodels(props) {
     const { addOrEdit, recordForEdit } = props
@@ -22,95 +16,84 @@ export default function Formmodels(props) {
         if ('fullName' in fieldValues)
             temp.fullName = fieldValues.fullName ? "" : "Nombre requerido."
             if ('LastName' in fieldValues)
-            temp.LastName = fieldValues.LastName ? "" : "Apellido requerido."
+            temp.LastName = fieldValues.fullName ? "" : "Apellido requerido."
             if ('Number' in fieldValues)
             temp.Number = fieldValues.Number.length > 9 ? "" : "Ingrese Elo."
               
         setErrors({
             ...temp
         })
-
-        // eslint-disable-next-line eqeqeq
-        if (fieldValues == values)
-            // eslint-disable-next-line eqeqeq
-            return Object.values(temp).every(x => x == "")
     }
 
-    const {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm
-    } = useForm(initialFValues, true, validate);
+    const [error, setError] = useState({
+        status: false,
+        msg: "",
+        type: ""
+      })
 
-    const handleSubmit = e => {
-        e.preventDefault()
-        if (validate()) {
-            addOrEdit(values, resetForm);
+    const onSubmit = () => {
+        console.log(body)
+        if(body.name=="" || body.lastname=="" || body.Elo=="" || body.Codigo_FIDE==""|| body.Academia==""){
+            setError({ status: true, msg: "Hay campos en blanco, por favor ingresar un valor", type: 'error' })
         }
+        else{
+            if(parseInt(body.Academia)>1 ||parseInt(body.Academia)<0){
+                setError({ status: true, msg: "Ingrese 1 si pertenece a la academia, 0 si no pertenece", type: 'error' })
+            }else{
+                axios.post('http://localhost:4000/api/IngresarDeportista', body)
+                .then(({ data }) => {
+                    console.log(data)
+                })
+                .catch(({ response }) => {
+                    console.log("No se registrop correctamente.")
+                })
+            }            
+        }      
     }
-
-    useEffect(() => {
-        if (recordForEdit != null)
-            setValues({
-                ...recordForEdit
-            })
-    }, [recordForEdit, setValues])
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form >
             <Grid container>
                 <Grid item xs={5}>
-                    <Controles.Input
-                        name="fullName"
+                    <Controls.Input
+                        name="name"
                         label="Nombre"
-                        value={values.fullName}
-                        onChange={handleInputChange}
-                        error={errors.fullName}
+                        value={body.name}
+                        onChange={inputChange}
                     />
-                    <Controles.Input
-                        name="LastName"
+                    <Controls.Input
+                        name="lastname"
                         label="Apellido"
-                        value={values.LastName}
-                        onChange={handleInputChange}
-                        error={errors.LastName}
+                        value={body.lastname}
+                        onChange={inputChange}
                     />
-                        <Controles.Input
-                        name="Number"
+                    <Controls.Input
+                        name="Elo"
                         label="Elo"
-                        value={values.Number}
-                        onChange={handleInputChange}
-                        error={errors.Number}
+                        value={body.Elo}
+                        onChange={inputChange}
                     />
-                    <Controles.Input
+                    <Controls.Input
                         label="Codigo Fide"
-                        name="Mobile"
-                        value={values.mobile}
-                        onChange={handleInputChange}
-                        error={errors.mobile}
+                        name="Codigo_FIDE"
+                        value={body.Codigo_FIDE}
+                        onChange={inputChange}
                     />
-                    <Controles.Input
+                    <Controls.Input
                         label="Academia"
-                        name="City"
-                        value={values.city}
-                        onChange={handleInputChange}
+                        name="Academia"
+                        value={body.Academia}
+                        onChange={inputChange}
                     />
-
                 </Grid>
                 <Grid item xs={5}>
-                  
-                 
-
                     <div>
-                        <Controles.Button
+                        <Controls.Button
                             type="Submit"
-                            text="Confirmar" />
-                        <Controles.Button
-                            text="Cancelar"
-                            color="primary"
-                            onClick={resetForm} />
+                            text="Confirmar" 
+                            onClick={onSubmit}
+                            />
+                        {error.status ? <Alert severity={error.type} sx={{ mt: 3 }}>{error.msg}</Alert> : ''}
                     </div>
                 </Grid>
             </Grid>
