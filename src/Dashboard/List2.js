@@ -16,8 +16,8 @@ const List2 = () =>{
                 <div className="list">
                     <NavLink to="/Dashboard" className="listItem" activeclassname="activeItem">Atletas</NavLink>
                     <NavLink to="/Torneo" className="listItem" activeclassname="activeItem">Torneos</NavLink>
-                    <NavLink to="/Estadistica" className="listItem" activeclassname="activeItem">Estadisticas</NavLink>
-                    <NavLink to="/info" className="listItem" activeclassname="activeItem">Ajustes</NavLink>
+                    <NavLink to="/Estadistica" className="listItem" activeclassname="activeItem">Admin. torneos</NavLink>
+                    <NavLink to="/info" className="listItem" activeclassname="activeItem">Manual</NavLink>
                     <NavLink to="/" className="listItem" activeclassname="activeItem">Cerrar Sesion</NavLink>
 
 

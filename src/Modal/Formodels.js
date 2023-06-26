@@ -22,7 +22,7 @@ export default function Formmodels(props) {
         if ('fullName' in fieldValues)
             temp.fullName = fieldValues.fullName ? "" : "Nombre requerido."
             if ('LastName' in fieldValues)
-            temp.LastName = fieldValues.fullName ? "" : "Apellido requerido."
+            temp.LastName = fieldValues.LastName ? "" : "Apellido requerido."
             if ('Number' in fieldValues)
             temp.Number = fieldValues.Number.length > 9 ? "" : "Ingrese Elo."
               
