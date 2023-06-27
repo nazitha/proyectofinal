@@ -5,6 +5,7 @@ import { Grid, Container, Paper, Avatar, Typography, TextField, Button, CssBasel
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
 import List from './List';
+import Footer from './Footer';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -114,6 +115,7 @@ const Login = () => {
                 </div>
             </Container>
         </Grid>
+        <Footer/>
         </>
 }
 

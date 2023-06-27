@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../CSS/Contact.css";
 import Formularios from "./Formularios";
 import List from "./List"
+import Footer from "./Footer"
 
 const Contact= () => {
   const [values, setValues] = useState({
@@ -65,6 +66,7 @@ const Contact= () => {
         <button>Enviar</button>
       </form>
     </div>
+    <Footer/>
     </>
 };
 

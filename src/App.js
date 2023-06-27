@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./component/Home";
 import Contact from "./component/Contact";
 import Login from "./component/Login";
-import Footer from "./component/Footer";
 import Dashboard from "./Dashboard/Dashboard";
 import info from "./Dashboard/info"
 import Estadistica from "./Dashboard/Estadistica"
@@ -22,7 +21,7 @@ const App = () => {
     <Route path="/Torneo" Component={Torneo}/>
 
   </Routes>
-  <Footer/>
+
   </>;
 
 }

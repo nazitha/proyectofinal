@@ -1,10 +1,10 @@
 import React from "react";
 import List2 from "./List2";
 
-const info = () =>{
+const Info = () =>{
     return<>
     <List2/>
     </>
 
 }
-export default info;
+export default Info;

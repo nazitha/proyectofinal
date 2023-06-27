@@ -1,0 +1,50 @@
+.container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .header {
+    margin-bottom: 20px;
+  }
+  
+  .tables-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .table-wrapper {
+    margin: 10px;
+  }
+  
+  table {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 8px;
+    border: 1px solid black;
+    text-align: center;
+  }
+  
+  .table-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .table-buttons button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #4caf50; /* Cambiar el color de fondo de los botones */
+    color: white;
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
