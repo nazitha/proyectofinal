@@ -1,66 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import "../CSS/Popup.css";
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton, TextField } from '@mui/material';
+import { IconButton, TextField, Alert } from '@mui/material';
+import axios from 'axios';
 
 
 
 const Popup = ({ onClose }) => {
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    const handleStartDateChange = (e) => {
-        setStartDate(e.target.value);
-      };
-    
-      const handleEndDateChange = (e) => {
-        setEndDate(e.target.value);
-      };
-  const [nombreTorneo, setNombreTorneo] = useState('');
-  const [arbitro, setArbitro] = useState('');
-  const [modalidad, setModalidad] = useState('');
-  const [local, setLocal] = useState('');
-  const [cantidadRondas, setCantidadRondas] = useState('');
-  const [tipoTorneo, setTipoTorneo] = useState('');
-  const [formatoJuego, setFormatoJuego] = useState('');
-  const [sistemaDesempate, setSistemaDesempate] = useState('');
-  const [locales, setLocales] = useState([]);
+  const [body, setBody] = useState({ nombre: '', arbitro: '', modalidad: '', local: '', rondas: '', fechaInicio: '', fechaFinal: '', tipoTorneo: '', formatoJuego: '', sistemaDesempate: '', fide_avalado: '' })
+
+  const [error, setError] = useState({
+    status: false,
+    msg: "",
+    type: ""
+  })
+
+  const inputChange = ({ target }) => {
+    const { name, value } = target
+    setBody({
+      ...body,
+      [name]: value
+    })
+  }
+
+  const [arbitros, setArbitro] = useState([])
+  const [locales, setLocales] = useState([])
+
+  const ConsultarArbitro = async () => {
+    const { data } = await axios.get('http://localhost:4000/api/MostrarArbitroTorneo')
+    console.log(data)
+    setArbitro(data)
+  }
+
+  const ConsultarLocal = async () => {
+    const { data } = await axios.get('http://localhost:4000/api/MostrarLocalTorneo')
+    console.log(data)
+    setLocales(data)
+  }
+
+  useEffect(ConsultarArbitro, [])
+  useEffect(ConsultarLocal, [])
+
   const handleClose = () => {
     onClose();
   };
-  useEffect(() => {
-    // Lógica para cargar las opciones de locales desde el API
-    const fetchLocales = async () => {
-      try {
-        const response = await fetch('/api/locales');
-        const data = await response.json();
-        setLocales(data);
-      } catch (error) {
-        console.error('Error al cargar los locales:', error);
-      }
-    };
 
-    fetchLocales();
-  }, []);
+  const onSubmit = async () => {
+    
+    // console.log("La modalidad es "+ body.modalidad)
+    // console.log("El local es "+ body.local)
+    // console.log("El arbitro es "+ body.arbitro)
+    // console.log("El nombre del torneo es "+ body.nombre)
+    // console.log("La fecha inicio es "+ body.fechaInicio)
+    // console.log("La fecha final es "+ body.fechaFinal)
+    // console.log("El torneo es en equipo "+ body.tipoTorneo)
+    // console.log("Fide avalado "+ body.fide_avalado)
+    // console.log("El sistema de desempate "+ body.sistemaDesempate)
+    // console.log("La cantidad de rondas es "+ body.rondas)
+    // console.log("El formato de juego es "+ body.formatoJuego)
 
-  const handleSave = () => {
-    // Validaciones
-    if (
-      !nombreTorneo ||
-      !arbitro ||
-      !modalidad ||
-      !local ||
-      !cantidadRondas ||
-      !tipoTorneo ||
-      !formatoJuego ||
-      !sistemaDesempate
-    ) {
-      // Manejo de error: campos obligatorios no completados
-      return;
+    if (body.modalidad == "" || body.local == "" || body.arbitro == "" || body.nombre == "" || body.fechaInicio == "" || body.fechaFinal == "" || body.tipoTorneo == "" || body.fide_avalado == "" || body.sistemaDesempate == "" || body.rondas == "" || body.formatoJuego == "") {
+      setError({ status: true, msg: "Hay campos en blanco, por favor ingresar un valor", type: 'error' })
+
+    } else {
+      axios.post("http://localhost:4000/api/IngresarTorneo", body)
+        .then(({ data }) => {
+          console.log(data)
+          setError({ status: true, msg: "Torneo ingresado correctamente", type: 'success' })
+        })
+        .catch(({ response }) => {
+          console.log("No se registrop correctamente.")
+        })
     }
-
-    // Lógica para guardar los campos en el API
-    // ...
-  };
+  }
 
   return (
     <div className="popup">
@@ -75,107 +87,147 @@ const Popup = ({ onClose }) => {
           <div className="form-field">
             <label htmlFor="nombreTorneo">Nombre del Torneo:</label>
             <input
+              name="nombre"
               type="text"
-              id="nombreTorneo"
-              value={nombreTorneo}
-              onChange={(e) => setNombreTorneo(e.target.value)}
-            />
+              id="nombre"
+              value={body.nombre}
+              onChange={inputChange} />
           </div>
           <div className="form-field">
             <label htmlFor="arbitro">Árbitro:</label>
             <select
+              name="arbitro"
               id="arbitro"
-              value={arbitro}
-              onChange={(e) => setArbitro(e.target.value)}
-            >
-              {/* Opciones cargadas desde el CRUD */}
-            </select>
-          </div>
-          <TextField
-            label="Fecha de Inicio"
-            type="date"
-            value={startDate}
-            onChange={handleStartDateChange}
-            // Lógica y validaciones relacionadas con la fecha de inicio
-            // ...
-          />
-          <TextField
-            label="Fecha Final"
-            type="date"
-            value={endDate}
-            onChange={handleEndDateChange}
-            // Lógica y validaciones relacionadas con la fecha final
-            // ...
-          />
-          <div className="form-field">
-            <label htmlFor="modalidad">Modalidad:</label>
-            <select
-              id="modalidad"
-              value={modalidad}
-              onChange={(e) => setModalidad(e.target.value)}
-            >
-              {/* Opciones cargadas desde el CRUD */}
-            </select>
-          </div>
-          
-          <div className="form-field">
-            <label htmlFor="local">Local:</label>
-            <select
-              id="local"
-              value={local}
-              onChange={(e) => setLocal(e.target.value)}
-            >
-              <option value="">Seleccione un local</option>
-              {locales.map((local) => (
-                <option key={local.id} value={local.id}>
-                  {local.nombre}
-                </option>
+              value={body.arbitro}
+              onChange={inputChange}>
+              <option value="">Seleccione un arbitro</option>
+              {arbitros.map((user, index) => (
+                <option value={index + 1}>{user.Nombre}</option>
               ))}
             </select>
           </div>
           <div className="form-field">
+            <label htmlFor="fechaInicio">Fecha de inicio</label>
+            <input name="fechaInicio"type="date" id="fechaInicio" value={body.fechaInicio} onChange={inputChange} />
+          </div>
+          <div className="form-field">
+            <label htmlFor="fechaFinal">Fecha final</label>
+            <input name="fechaFinal" type="date" id="fechaFinal" value={body.fechaFinal} onChange={inputChange} />
+          </div>
+          <div className="form-field">
+            <label htmlFor="modalidad">Modalidad:</label>
+            <select name="modalidad" id="modalidad" value={body.modalidad} onChange={inputChange}>
+              <option value="">Seleccione una modalidad</option>
+              <option value="2">Blitz</option>
+              <option value="4">Rápido</option>
+              <option value="1">Clásico</option>
+            </select>
+          </div>
+
+          <div className="form-field">
+            <label htmlFor="local">Local:</label>
+            <select
+              name="local"
+              id="local"
+              value={body.local}
+              onChange={inputChange}>
+              <option value="">Seleccione un local</option>
+              {locales.map((user, index) => (
+                <option value={index + 1}>{user.Nombre}</option>
+              ))}
+            </select>
+          </div>
+          <div className="form-field">
+
             <label htmlFor="cantidadRondas">Cantidad de Rondas:</label>
             <input
+              name="rondas"
               type="number"
               id="cantidadRondas"
-              value={cantidadRondas}
-              onChange={(e) => setCantidadRondas(e.target.value)}
-            />
+              min="4" max="7"
+              value={body.rondas}
+              onChange={inputChange} />
           </div>
+
           <div className="form-field">
             <label htmlFor="tipoTorneo">Tipo de Torneo:</label>
             <select
-              id="tipoTorneo"
-              value={tipoTorneo}
-              onChange={(e) => setTipoTorneo(e.target.value)}
-            >
-              {/* Opciones cargadas desde el CRUD */}
+              name="tipoTorneo" id="tipoTorneo" value={body.tipoTorneo} onChange={inputChange}>
+              <option value="">Seleccione un tipo de torneo</option>
+              <option value="0">Individual</option>
+              <option value="1">Equipo</option>
             </select>
           </div>
           <div className="form-field">
             <label htmlFor="formatoJuego">Formato de Juego:</label>
             <select
-              id="formatoJuego"
-              value={formatoJuego}
-              onChange={(e) => setFormatoJuego(e.target.value)}
-            >
-              {/* Opciones cargadas desde el CRUD */}
+              name="formatoJuego" id="formatoJuego" value={body.formatoJuego} onChange={inputChange}>
+              <option value="">Seleccione un formato de juego</option>
+              <option value="1">Sistema Suizo</option>
+              <option value="2">Liga</option>
+              <option value="3">Round Robin</option>
             </select>
           </div>
           <div className="form-field">
             <label htmlFor="sistemaDesempate">Sistema de Desempate:</label>
             <select
-              id="sistemaDesempate"
-              value={sistemaDesempate}
-              onChange={(e) => setSistemaDesempate(e.target.value)}
-            >
-              {/* Opciones cargadas desde el CRUD */}
+              name="sistemaDesempate" id="sistemaDesempate" value={body.sistemaDesempate} onChange={inputChange}>
+              <option value="">Seleccione</option>
+              {body.tipoTorneo === '0' && body.formatoJuego === '3' && (
+                <>
+                  <option value="7">Confrontacion Directa</option>
+                  <option value="3">Sistema Koya</option>
+                  <option value="4">Sonneborn-Berger</option>
+                  <option value="6">Número de Partidas Ganadas</option>
+                </>
+              )}
+              {body.tipoTorneo === '1' && body.formatoJuego === '3' && (
+                <>
+                  <option value="8">Puntos de Partidos</option>
+                  {/* <option value="match-points">Match Points</option> */}
+                  <option value="7">Encuentro Directo</option>
+                  <option value="4">Sonneborn-Berger</option>
+                </>
+              )}
+              {body.tipoTorneo === '0' && body.formatoJuego === '1' && (
+                <>
+                  <option value="7">Encuentro Directo</option>
+                  <option value="2">Bucholtz</option>
+                  <option value="4">Sonneborn-Berger</option>
+                  <option value="6">Número de Partidas Ganadas</option>
+                </>
+              )}
+              {body.tipoTorneo === '1' && body.formatoJuego === '1' && (
+                <>
+                  <option value="8">Puntos de Partidos</option>
+                  {/* <option value="match-points">Match Points</option> */}
+                  <option value="7">Encuentro Directo</option>
+                  <option value="2">Bucholtz</option>
+                  <option value="4">Sonneborn-Berger</option>
+                </>
+              )}
+              {(body.tipoTorneo === '0' || body.tipoTorneo === '1') && body.formatoJuego === '2' && (
+                <option value="2">Bucholtz</option>
+              )}
             </select>
           </div>
+
+          <div className="form-field">
+            <label htmlFor="modalidad">Caracter</label>
+            <select name="fide_avalado" id="fide_avalado" value={body.fide_avalado} onChange={inputChange}>
+              <option value="">Seleccione</option>
+              <option value="0">Amistoso</option>
+              <option value="1">Avalado por la fide</option>
+            </select>
+          </div>
+
           <div className="popup-buttons">
-            <button type="button" onClick={handleSave}>
+            <button type="button" onClick={onSubmit}>
               Guardar
             </button>
+          </div>
+          <div >
+            {error.status ? <Alert severity={error.type} sx={{ mt: 3 }}>{error.msg}</Alert> : ''}
           </div>
         </form>
       </div>

@@ -25,44 +25,50 @@ const useStyles = makeStyles( ({
 }))
 
 export default function Dashboard () {
-  const classes = useStyles();
-  const [recordForEdit, setRecordForEdit] = useState(null)
-     const [openPopup, setOpenPopup] = useState(false)
-     const [ setFilterFn] = useState({ fn: items => { return items; } })
+    
+    const classes = useStyles();
+    const [recordForEdit, setRecordForEdit] = useState(null)
+    const [openPopup, setOpenPopup] = useState(false)
+    
+    const [body, setBody] = useState({ busqueda: ''})
+    
+    const inputChange = async ({ target }) => {
+        const { name, value } = target
+        setBody({
+            ...body,
+            [name]: value
+        })
 
-  const handleSearch = e => {
-    let target = e.target;
-    setFilterFn({
-        fn: items => {
-            if (target.value == "")
-                return items;
-            else
-                return items.filter(x => x.fullName.toLowerCase().includes(target.value))
-        }
-    })
-}
+        if(body.busqueda=="" || body.busqueda==" " ){
+            getUser()
+        }else{
+            const { data } = await axios.post('http://localhost:4000/api/BuscarDeportista',body)
+            console.log(data)
+            setUserList(data)
+        }        
+    }
 
-const addOrEdit = (Dashboard, resetForm) => {
-    if (Dashboard.id == 0)
-        Formmodels.insertAtleta(Dashboard)
-    else
-        Formmodels.updateA(Dashboard)
-    resetForm()
-    setRecordForEdit(null)
-    setOpenPopup(false)
-}
+    const addOrEdit = (Dashboard, resetForm) => {
+        if (Dashboard.id == 0)
+            Formmodels.insertAtleta(Dashboard)
+        else
+            Formmodels.updateA(Dashboard)
+        resetForm()
+        setRecordForEdit(null)
+        setOpenPopup(false)
+    }
 
-const openInPopup = item => {
-    setRecordForEdit(item)
-    setOpenPopup(true)
-}
+    const openInPopup = item => {
+        setRecordForEdit(item)
+        setOpenPopup(true)
+    }
 
     const[userList, setUserList] = useState ([])
 
     const getUser = async () => {
-      const { data } = await axios.get('http://localhost:4000/api/MostrarDeportista')
-      console.log(data)
-      setUserList(data)
+        const { data } = await axios.get('http://localhost:4000/api/MostrarDeportista')
+        console.log(data)
+        setUserList(data)
     }
 
     const Eliminar = async (id) =>{
@@ -76,21 +82,21 @@ const openInPopup = item => {
 
     useEffect(getUser, [])
 
-    
-  return<>
+    return<>
      <List2/>
        <h1 className='text-center'>Tabla de Atleta</h1>
 
        <Toolbar>
                     <Controles.Input
                         label="Buscar Atletlas"
+                        name="busqueda"
                         className={classes.searchInput}
                         InputProps={{
                             startAdornment: (<InputAdornment position="start">
                                 <Search />
                             </InputAdornment>)
                         }}
-                        onChange={handleSearch}
+                        onChange={inputChange}
                     />
                     <Controles.Button
                         text="Agregar"
@@ -107,7 +113,7 @@ const openInPopup = item => {
                     <TableHead>
                             <TableRow>
                                 <TableCell>Id</TableCell>
-                            <TableCell>Nombre</TableCell>
+                                <TableCell>Nombre</TableCell>
                                 <TableCell>Apellido</TableCell>
                                 <TableCell>Elo</TableCell>
                                 <TableCell>Codigo Fide</TableCell>
@@ -162,5 +168,11 @@ const openInPopup = item => {
 
       
 
-    </>
-};
+    </>   
+}
+
+
+
+
+    
+  
