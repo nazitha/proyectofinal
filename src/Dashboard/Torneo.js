@@ -16,20 +16,16 @@ import { makeStyles } from "@material-ui/styles";
 import AddIcon from "@material-ui/icons/Add";
 import { Search } from "@material-ui/icons";
 
-<<<<<<< HEAD
-const useStyles = makeStyles( ({
-=======
 const useStyles = makeStyles({
->>>>>>> eaba3976f4ebed50c3bd7586bd1fba1c7c574ca3
   searchInput: {
     width: "75%",
   },
   newButton: {
-    position: "absolute",
-    right: "10px",
-    width: "20%",
-  },
-});
+      position: 'absolute',
+      right: '10px',
+      width: '20%'
+  }
+})
 const Torneo = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [Troneos, setTorneos] = useState([]);

@@ -1,107 +1,88 @@
 /* eslint-disable eqeqeq */
-import {
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  IconButton,
-  Toolbar,
-  InputAdornment,
-} from "@mui/material";
+import {  Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton,Toolbar, InputAdornment } from '@mui/material';
 import { makeStyles } from "@material-ui/styles";
 import {EditOutlined} from '@material-ui/icons'
 import { DeleteForeverOutlined } from '@material-ui/icons';
 import List2 from './List2';
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
-import Controles from '../Modal/Controles';
 import AddIcon from '@material-ui/icons/Add';
 import { Search } from "@material-ui/icons";
-import Poppup from '../Modal/Poppus';
-import Formmodels from '../Modal/Formodels';
+import Popup from "../Dashboard/Popup2";
 
-const useStyles = makeStyles({
-  searchInput: {
-    width: "75%",
+
+const useStyles = makeStyles( ({
+   searchInput: {
+      width: '75%'
   },
   newButton: {
       position: 'absolute',
       right: '10px',
       width: '20%'
   }
-})
+}))
 
 export default function Dashboard () {
-    
-    const classes = useStyles();
-    const [recordForEdit, setRecordForEdit] = useState(null)
-    const [openPopup, setOpenPopup] = useState(false)
-    
-    const [body, setBody] = useState({ busqueda: ''})
-    
-    const inputChange = async ({ target }) => {
+  const classes = useStyles();
+  const [isPopupOpen, setPopupOpen] = useState(false);
+
+  const [recordForEdit, setRecordForEdit] = useState(null)
+     const [openPopup, setOpenPopup] = useState(false)
+     const [ setFilterFn] = useState({ fn: items => { return items; } })
+     const [Busqueda, setBusqueda] = useState({ busqueda: '' })
+
+
+     const inputChange = async ({ target }) => {
         const { name, value } = target
-        setBody({
-            ...body,
-            [name]: value
+        setBusqueda({
+          ...Busqueda,
+          [name]: value
         })
+      }
 
-        if(body.busqueda=="" || body.busqueda==" " ){
-            getUser()
-        }else{
-            const { data } = await axios.post('http://localhost:4000/api/BuscarDeportista',body)
-            console.log(data)
-            setUserList(data)
-        }        
-    }
+const addOrEdit = (Dashboard, resetForm) => {
+    if (Dashboard.id == 0)
+        Popup.insertAtleta(Dashboard)
+    else
+        Popup.updateA(Dashboard)
+    resetForm()
+    setRecordForEdit(null)
+    setOpenPopup(false)
+}
 
-    const addOrEdit = (Dashboard, resetForm) => {
-        if (Dashboard.id == 0)
-            Formmodels.insertAtleta(Dashboard)
-        else
-            Formmodels.updateA(Dashboard)
-        resetForm()
-        setRecordForEdit(null)
-        setOpenPopup(false)
-    }
 
-    const openInPopup = item => {
-        setRecordForEdit(item)
-        setOpenPopup(true)
-    }
 
-  const [userList, setUserList] = useState([]);
+    const[userList, setUserList] = useState ([])
 
     const getUser = async () => {
-        const { data } = await axios.get('http://localhost:4000/api/MostrarDeportista')
-        console.log(data)
-        setUserList(data)
+      const { data } = await axios.get('http://localhost:4000/api/MostrarDeportista')
+      console.log(data)
+      setUserList(data)
     }
 
-  const Eliminar = async (id) => {
-    try {
-      const { data } = await axios.post(
-        "http://localhost:4000/api/EliminarDeportista",
-        { id: id }
-      );
-      getUser();
-    } catch (error) {
-      console.log(error);
+    const Eliminar = async (id) =>{
+        try{
+            const { data } = await axios.post('http://localhost:4000/api/EliminarDeportista', {id:id})
+            getUser()
+          }catch(error){
+            console.log(error)
+          }
     }
+    
+  const handleAdd = () => {
+    setPopupOpen(true);
+  };
 
-  useEffect(() => {
-    getUser();
-  }, []);
 
-    return<>
+    useEffect(getUser, [])
+
+    
+  return<>
      <List2/>
        <h1 className='text-center'>Tabla de Atleta</h1>
 
-       <Toolbar>
-                    <Controles.Input
-                        label="Buscar Atletlas"
+       <Toolbar >
+          <input   label="Buscar Atletlas"
                         name="busqueda"
                         className={classes.searchInput}
                         InputProps={{
@@ -109,16 +90,14 @@ export default function Dashboard () {
                                 <Search />
                             </InputAdornment>)
                         }}
-                        onChange={inputChange}
-                    />
-                    <Controles.Button
-                        text="Agregar"
+                        onChange={inputChange}/>
+         <button  text="Agregar"
                         startIcon={<AddIcon />}
-                        className={classes.newButton}
-                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}
-                    />
-                </Toolbar>
-   
+                        className={classes.newButton} onClick={handleAdd}>Añadir</button>
+      </Toolbar>
+
+
+      {isPopupOpen && <Popup onClose={() => setPopupOpen(false)} />}
          
         <div className='result-container' id="resultConstainer">
                 <TableContainer id="result" elevation={2} >
@@ -126,7 +105,7 @@ export default function Dashboard () {
                     <TableHead>
                             <TableRow>
                                 <TableCell>Id</TableCell>
-                                <TableCell>Nombre</TableCell>
+                            <TableCell>Nombre</TableCell>
                                 <TableCell>Apellido</TableCell>
                                 <TableCell>Elo</TableCell>
                                 <TableCell>Codigo Fide</TableCell>
@@ -169,23 +148,9 @@ export default function Dashboard () {
             </TableContainer>   
 
         </div>
-        <Poppup
-                title="Agregar Atleta"
-                openPopup={openPopup}
-                setOpenPopup={setOpenPopup}
-            >
-                <Formmodels
-                    recordForEdit={recordForEdit}
-                    addOrEdit={addOrEdit} />
-            </Poppup>
+ 
 
       
 
-    </>   
-}
-
-
-
-
-    
-  
+    </>
+};
