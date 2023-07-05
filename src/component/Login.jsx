@@ -1,48 +1,78 @@
-// import React from "react";
-// import { TextField, Button } from "@mui/material";
-// import { AccountCircle } from "@mui/icons-material";
-// import LockIcon from '@mui/icons-material/Lock';
-// import FacebookIcon from '@mui/icons-material/Facebook';
-// import GoogleIcon from '@mui/icons-material/Google';
-// import { useHistory } from "react-router-dom";
-// import "../CSS/Login.css"
-// import List from "./List"
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../CSS/Login.css';
+import { FaFacebook, FaGoogle } from 'react-icons/fa';
+import List from "../component/List"
+import Footer from "./Footer"
+const Login = (props) => {
+    const history = useNavigate();
 
-// const Login = () => {
-//   const history = useHistory();
+    const abc = path => {
+      history(path);
+    };
+  
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: '',
+      });
+
+      const handleChange = (event) => {
+        const { name, value } = event.target;
+        setCredentials((prevCredentials) => ({
+          ...prevCredentials,
+          [name]: value,
+        }));
+      };
 
 
-//   const handleLogin = () => {
-//     // Redirigir a la página Dashboard al hacer clic en el botón "Entrar"
-//     history.push("/Dashboard");
-//   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
-//   return <>
-//   <List/>
-//     <div className="login-container">
-//       <h2>Iniciar sesión</h2>
-//       <form className="login-form">
-//         <div className="form-field">
-//           <AccountCircle />
-//           <TextField label="Usuario" variant="outlined" />
-//         </div>
-//         <div className="form-field">
-//           <LockIcon />
-//           <TextField label="Contraseña" variant="outlined" type="password" />
-//         </div>
-//         <Button variant="contained" color="primary" onClick={handleLogin}>
-//           Entrar
-//         </Button>
-//       </form>
-//       <div className="login-options">
-//         <p>Iniciar sesión usando:</p>
-//         <div className="social-login">
-//           <FacebookIcon />
-//           <GoogleIcon />
-//         </div>
-//       </div>
-//     </div>
-//   </>;
-// }
+  return <>
+  <List/>
+  <div className="login-form-container">
+      <h2>Iniciar sesión</h2>
+      <form onSubmit={handleSubmit}>
+      <div className="form-field">
+          <label htmlFor="username">Usuario:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={credentials.username}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-field">
+          <label htmlFor="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={credentials.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+       
+      </form>
+        <button onClick={() => abc('/Dashboard')}>Entrar</button>
+   
+          <a href="/forgot-password">¿Olvidaste tu contraseña?</a>           
 
-// export default Login;
+        <div className="social-login">
+            <span>Iniciar sesión con:</span>
+            <div className="social-icons">
+            <FaFacebook className="icon" />
+            <FaGoogle className="icon" />
+            </div>
+      </div>
+      
+    </div>
+    <Footer/>
+  </>;
+};
+
+export default Login;
