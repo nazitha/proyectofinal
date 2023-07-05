@@ -1,14 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Popup from "../Dashboard/popup";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import "../CSS/Torneo.css";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, InputAdornment } from '@mui/material';
 import List2 from "./List2";
 import axios from 'axios';
+import { makeStyles } from "@material-ui/styles";
+import AddIcon from '@material-ui/icons/Add';
+import { Search } from "@material-ui/icons";
 
+
+
+
+const useStyles = makeStyles( ({
+  searchInput: {
+     width: '75%'
+ },
+ newButton: {
+     position: 'absolute',
+     right: '10px',
+     width: '20%'
+ }
+}))
 const Torneo = () => {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [Troneos, setTorneos] = useState([])
   const [Busqueda, setBusqueda] = useState({ busqueda: '' })
+  const classes = useStyles();
+
 
   const getTorneos = async () => {
     const { data } = await axios.get('http://localhost:4000/api/MostrarTorneo')
@@ -44,14 +61,24 @@ const Torneo = () => {
 
   return <>
     <List2 />
+
     <div>
-      <div className="search-container">
-        <div className="search-bar">
-          <input type="text" placeholder="Buscar..." name="busqueda" onChange={inputChange}/>
-          <button onClick={Buscar}>Buscar</button>
-        </div>
-        <button className="add-button" onClick={handleAdd}>Añadir</button>
-      </div>
+    <h1 className='text-center'>Tabla de Torneos</h1>
+
+      <Toolbar >
+          <input   label="Buscar Atletlas"
+                        name="busqueda"
+                        className={classes.searchInput}
+                        InputProps={{
+                            startAdornment: (<InputAdornment position="start">
+                                <Search />
+                            </InputAdornment>)
+                        }}
+                        onChange={inputChange}/>
+         <button  text="Agregar"
+                        startIcon={<AddIcon />}
+                        className={classes.newButton} onClick={handleAdd}>Añadir</button>
+      </Toolbar>
 
 
       {isPopupOpen && <Popup onClose={() => setPopupOpen(false)} />}
