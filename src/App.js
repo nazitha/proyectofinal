@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard/Dashboard";
 import info from "./Dashboard/info"
 import Estadistica from "./Dashboard/Estadistica"
 import Torneo from "./Dashboard/Torneo"
+import User from "./Dashboard/User"
 
 const App = () => {
   return <>
@@ -19,6 +20,8 @@ const App = () => {
     <Route path="/info" Component={info}/>
     <Route path="/Estadistica" Component={Estadistica}/>
     <Route path="/Torneo" Component={Torneo}/>
+    <Route path="/User" Component={User}/>
+
 
   </Routes>
 
