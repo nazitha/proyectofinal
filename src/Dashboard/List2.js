@@ -17,8 +17,8 @@ const List2 = () => {
               <div className="dropdown">
                 <button className="dropbtn">Registros</button>
                 <div className="dropdown-content">
-                  <NavLink to="/Dashboard" className="listItem" activeClassName="activeItem">
-                    Reg. atletas
+                  <NavLink to="/Deportista" className="listItem" activeClassName="activeItem">
+                    Reg. deportistas
                   </NavLink>
                   <NavLink to="/Torneo" className="listItem" activeClassName="activeItem">
                     Reg. torneos
@@ -26,8 +26,38 @@ const List2 = () => {
                   <NavLink to="/Estadistica" className="listItem" activeClassName="activeItem">
                     Reg. rondas
                   </NavLink>
-                  <NavLink to="/User" className="listItem" activeClassName="activeItem">
+                  <NavLink to="/Usuario" className="listItem" activeClassName="activeItem">
                     Reg. usuarios
+                  </NavLink>
+                  <NavLink to="/Arbitro" className="listItem" activeClassName="activeItem">
+                    Reg. arbitro
+                  </NavLink>
+                  <NavLink to="/Departamento" className="listItem" activeClassName="activeItem">
+                    Reg. departamento
+                  </NavLink>
+                  <NavLink to="/Local" className="listItem" activeClassName="activeItem">
+                    Reg. local
+                  </NavLink>
+                  <NavLink to="/Entrenador" className="listItem" activeClassName="activeItem">
+                    Reg. entrenador
+                  </NavLink>
+                  <NavLink to="/Equipo" className="listItem" activeClassName="activeItem">
+                    Reg. equipo
+                  </NavLink>
+                  <NavLink to="/MiembroEquipo" className="listItem" activeClassName="activeItem">
+                    Reg. miembro de Equipo
+                  </NavLink>
+                  <NavLink to="/FormatoJuego" className="listItem" activeClassName="activeItem">
+                    Reg. formato de juego
+                  </NavLink>
+                  <NavLink to="/Modalidad" className="listItem" activeClassName="activeItem">
+                    Reg. modalidad
+                  </NavLink>
+                  <NavLink to="/SistemaDesempate" className="listItem" activeClassName="activeItem">
+                    Reg. sistema de Desempate
+                  </NavLink>
+                  <NavLink to="/Enfrentamiento" className="listItem" activeClassName="activeItem">
+                    Reg. enfrentamiento de ronda
                   </NavLink>
                 </div>
               </div>

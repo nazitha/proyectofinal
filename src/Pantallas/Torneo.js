@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Popup from "../Dashboard/popup";
+import Popup from "../Popups/popupTorneo";
 import {
   TableContainer,
   Table,
@@ -10,7 +10,7 @@ import {
   Toolbar,
   InputAdornment,
 } from "@mui/material";
-import List2 from "./List2";
+import List2 from "../Dashboard/List2";
 import axios from "axios";
 import { makeStyles } from "@material-ui/styles";
 import AddIcon from "@material-ui/icons/Add";
@@ -44,19 +44,13 @@ const Torneo = () => {
       ...Busqueda,
       [name]: value,
     });
-  };
 
-  const Buscar = async () => {
-    if (Busqueda.busqueda == "" || Busqueda.busqueda == " ") {
-      getTorneos();
-    } else {
-      const { data } = await axios.post(
-        "http://localhost:4000/api/BuscarTorneo",
-        Busqueda
-      );
-      console.log(data);
-      setTorneos(data);
-    }
+    const { data } = await axios.post(
+      "http://localhost:4000/api/BuscarTorneo",
+      Busqueda
+    );
+    console.log(data);
+    setTorneos(data);
   };
 
   useEffect(() => {
